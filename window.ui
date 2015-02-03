@@ -129,7 +129,7 @@
     <property name="transient_for">window1</property>
     <property name="program_name">Steeper</property>
     <property name="version">0.1</property>
-    <property name="comments" translatable="yes">A simple tea steeping timer for the Unity Desktop</property>
+    <property name="comments" translatable="yes">Simple tea steeping timer (mainly for Unity)</property>
     <property name="translator_credits" translatable="yes">translator-credits</property>
     <property name="authors">Peter Dahlman, original code (teatime) by Pavel Rojtberg</property>
     <property name="logo">/usr/share/steeper/icons/steeper-128x128.png</property>
