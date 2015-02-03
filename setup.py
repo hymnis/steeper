@@ -25,5 +25,8 @@ setup(
       url = "http://",
       license = "GNU GPL v3",
       data_files = [("share/applications/", ["steeper.desktop"]),
-                    (DEST+"icons/", ["icons"]),
+                    (DEST+"icons/", ["icons/steeper-scalable.svg",
+                    "icons/steeper-48x48.png",
+                    "icons/steeper-64x64.png",
+                    "icons/steeper-128x128.png"]),
                     (DEST, ["window.ui", "steeper.py"])])

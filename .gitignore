@@ -2,5 +2,7 @@
 .pybuild
 build
 dist
+debian/files
 debian/steeper
-debian/*.log
+debian/steeper.*
+po/steeper.pot

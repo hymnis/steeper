@@ -388,7 +388,7 @@ class Controller:
 #            print("Timer has been seen!")
             self.seen = True
             self.stop()
-        else:
+#        else:
 #            print("Timer has not been seen...")
 
     def reset_brew_counter(self):
