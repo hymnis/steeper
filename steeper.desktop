@@ -5,6 +5,6 @@ GenericName=Timer
 Keywords=timer;
 Exec=/usr/share/steeper/steeper.py
 Path=/usr/share/steeper/
-Icon=/usr/share/steeper/icons/scalable/steeper.svg
+Icon=/usr/share/steeper/icons/steeper-scalable.svg
 Terminal=false
 Categories=Utility;GTK;

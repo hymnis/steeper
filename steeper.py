@@ -7,14 +7,14 @@ import subprocess
 
 # Not for production
 #import os
-# import pprint
+#import pprint
 
 from gi.repository import Unity, GObject, Gtk, Notify, Gdk, Pango, GLib
 # from gi.repository import GObject, Gtk, Notify, Gdk, Pango, GLib
 
 GETTEXT_DOMAIN = "steeper"
 
-# should use libcanberra, but no python bindings so far..
+# Should use libcanberra, but no python bindings so far..
 SOUND_ALERT_FILE = "/usr/share/sounds/freedesktop/stereo/complete.oga"
 
 REMIND_DELTA_SECONDS=30
