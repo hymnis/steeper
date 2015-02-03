@@ -1,0 +1,86 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-03 06:48+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../steeper.py:46
+msgid "finished just now"
+msgstr ""
+
+#: ../steeper.py:48
+#, python-format
+msgid "finished %s seconds ago"
+msgstr ""
+
+#: ../steeper.py:50
+#, python-format
+msgid "finished %s minutes ago"
+msgstr ""
+
+#: ../steeper.py:52
+#, python-format
+msgid "%s is ready"
+msgstr ""
+
+#: ../steeper.py:90
+msgid "Name"
+msgstr ""
+
+#: ../steeper.py:90
+msgid "Duration"
+msgstr ""
+
+#: ../steeper.py:90
+msgid "Brew Increment"
+msgstr ""
+
+#: ../steeper.py:90
+msgid "Brews"
+msgstr ""
+
+#: ../steeper.py:90
+msgid "Count Brews?"
+msgstr ""
+
+#: ../steeper.py:128
+msgid "New Entry"
+msgstr ""
+
+#: ../steeper.py:310
+#, python-format
+msgid "%s: %s remaining"
+msgstr ""
+
+#: ../steeper.py:320
+msgid "Stop Timer"
+msgstr ""
+
+#: ../steeper.py:331 ../window.ui.h:2
+msgid "Start Timer"
+msgstr ""
+
+#: ../steeper.py:334 ../window.ui.h:1
+msgid "No Running Timers"
+msgstr ""
+
+#: ../window.ui.h:3
+msgid "A simple tea steeping timer for the Unity Desktop"
+msgstr ""
+
+#: ../window.ui.h:4
+msgid "translator-credits"
+msgstr ""

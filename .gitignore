@@ -1,0 +1,6 @@
+*.log
+.pybuild
+build
+dist
+debian/steeper
+debian/*.log

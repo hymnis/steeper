@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Steeper
+GenericName=Timer
+Keywords=timer;
+Exec=/usr/share/steeper/steeper.py
+Path=/usr/share/steeper/
+Icon=/usr/share/steeper/icons/scalable/steeper.svg
+Terminal=false
+Categories=Utility;GTK;

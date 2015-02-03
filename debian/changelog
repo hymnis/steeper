@@ -1,0 +1,6 @@
+steeper (0.1-1) trusty; urgency=low
+
+  * initial release
+  * add support for duration increment and brew counter
+
+ -- Peter Dahlman <peter.dahlman@gmail.com>  Sat, 31 Jan 2015 20:33:52 +0100

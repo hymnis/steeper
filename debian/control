@@ -1,0 +1,15 @@
+Source: steeper
+Section: misc
+Priority: optional
+Maintainer: Peter Dahlman <peter.dahlman@gmail.com>
+Build-Depends: debhelper (>= 9), python3, python3-distutils-extra
+Standards-Version: 3.9.5
+X-Python3-Version: >= 3.4
+
+Package: steeper
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}, python3, gir1.2-unity-5.0, gir1.2-gtk-3.0, gir1.2-notify-0.7, gir1.2-gdkpixbuf-2.0, pulseaudio-utils, sound-theme-freedesktop
+Description: Simple tea steeping timer (mainly for Unity)
+ A simple egg-timer type application to help you manage your tea steeping time.
+ Rings an alarm and displays an desktop notification, when the tea is ready.
+ Supports saving several pre-set timers as well as brew duration increments.
