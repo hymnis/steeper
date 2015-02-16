@@ -3,12 +3,7 @@
 import time
 import json
 import locale
-# import subprocess
 import pycanberra
-
-# Not for production
-#import os
-#import pprint
 
 from gi.repository import Unity, GObject, Gtk, Notify, Gdk, Pango, GLib
 
@@ -86,36 +81,28 @@ class TreeView:
         for i in range(65, 96):
             temperature_range.prepend([str(i)+" °C"])
 
-        transl = (("name", _("Name")), ("temperature", _("Temp,")), ("duration", _("Duration")), ("increment", _("Brew Increment")), ("brew", _("Brews")), ("brew_toggle", _("Count Brews?")))
-        cell_align = (0.0, 0.5)
-        col_min = 110
-        col_max = 200
-        col_align = 0.0
+        transl = (("name", _("Name")), ("temperature", _("Temp.")), ("duration", _("Duration")), ("increment", _("Brew Increment")), ("brew", _("Brews")), ("brew_toggle", _("Count Brews?")))
+        cell_align = [0.0, 0.5]
+        col_settings = {"min": 110
+                       ,"max": 200
+                       ,"align": 0.0
+                       }
 
         for key, title in transl:
             cell = None
             col = Gtk.TreeViewColumn(title, cell)
             col.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
 
-            if key == "brew":
-                cell = Gtk.CellRendererText()
-                cell.set_property("editable", False)
-                cell.set_property("ellipsize", Pango.EllipsizeMode.END)
-
-                cell_align = (0.5, 0.5)
-                col_align = 0.5
-                col_min = 70
-                col_max = 80
-            elif key == "brew_toggle":
+            if key == "brew_toggle":
                 cell = Gtk.CellRendererToggle()
                 cell.set_property("activatable", True)
                 cell.set_property("radio", False)
                 cell.connect("toggled", self._toggled_cb, key)
 
-                cell_align = (0.5, 0.5)
-                col_align = 0.5
-                col_min = 110
-                col_max = 200
+                cell_align = [0.5, 0.5]
+                col_settings["align"] = 0.5
+                col_settings["min"] = 110
+                col_settings["max"] = 200
             elif key == "temperature":
                 cell = Gtk.CellRendererCombo()
                 cell.set_property("editable", True)
@@ -124,34 +111,43 @@ class TreeView:
                 cell.set_property("has-entry", False)
                 cell.connect("edited", self._edited_combo, key)
 
-                cell_align = (0.5, 0.5)
-                col_align = 0.5
-                col_min = 65
-                col_max = 80
+                cell_align = [0.5, 0.5]
+                col_settings["align"] = 0.5
+                col_settings["min"] = 65
+                col_settings["max"] = 80
             else:
                 cell = Gtk.CellRendererText()
                 cell.set_property("ellipsize", Pango.EllipsizeMode.END)
-                cell.set_property("editable", True)
-                cell.connect("edited", self._edited_cb, key)
 
-                if key == "name":
-                    col_min = 120
-                    col_max = 200
-                elif key == "duration":
-                    cell_align = (0.5, 0.5)
-                    col_align = 0.5
-                    col_min = 80
-                    col_max = 100
-                elif key == "increment":
-                    cell_align = (0.5, 0.5)
-                    col_align = 0.5
-                    col_min = 130
-                    col_max = 140
+                if key == "brew":
+                    cell.set_property("editable", False)
+
+                    cell_align = [0.5, 0.5]
+                    col_settings["align"] = 0.5
+                    col_settings["min"] = 70
+                    col_settings["max"] = 80
+                else:
+                    cell.set_property("editable", True)
+                    cell.connect("edited", self._edited_cb, key)
+
+                    if key == "name":
+                        col_settings["min"] = 120
+                        col_settings["max"] = 200
+                    elif key == "duration":
+                        cell_align = [0.5, 0.5]
+                        col_settings["align"] = 0.5
+                        col_settings["min"] = 80
+                        col_settings["max"] = 100
+                    elif key == "increment":
+                        cell_align = [0.5, 0.5]
+                        col_settings["align"] = 0.5
+                        col_settings["min"] = 130
+                        col_settings["max"] = 140
 
             cell.set_alignment(cell_align[0], cell_align[1])
-            col.set_alignment(col_align)
-            col.set_min_width(col_min)
-            col.set_fixed_width(col_max)
+            col.set_alignment(col_settings["align"])
+            col.set_min_width(col_settings["min"])
+            col.set_fixed_width(col_settings["max"])
             col.pack_end(cell, False)
             self._cells.append(cell)
 
