@@ -18,7 +18,7 @@ setup(
       cmdclass = {"build": build_extra.build_extra,
                   "build_i18n": my_build_i18n},
       name = "steeper",
-      version = "0.1",
+      version = "0.2",
       description = "Simple tea steeping timer (mainly for Unity)",
       author = "Peter Dahlman",
       author_email = "peter.dahlman@gmail.com",
@@ -29,4 +29,4 @@ setup(
                     "icons/steeper-48x48.png",
                     "icons/steeper-64x64.png",
                     "icons/steeper-128x128.png"]),
-                    (DEST, ["window.ui", "steeper.py"])])
+                    (DEST, ["window.ui", "steeper.py", "pycanberra.py"])])
