@@ -87,7 +87,16 @@ class TreeView:
         self._model = model
         self._cells = []
 
-        transl = (("name", _("Name")), ("duration", _("Duration")), ("increment", _("Brew Increment")), ("brew", _("Brews")), ("brew_toggle", _("Count Brews?")))
+        temperature_range = Gtk.ListStore(str)
+
+        for i in range(65, 96):
+            temperature_range.prepend([str(i)+" °C"])
+
+        transl = (("name", _("Name")), ("temperature", _("Temp,")), ("duration", _("Duration")), ("increment", _("Brew Increment")), ("brew", _("Brews")), ("brew_toggle", _("Count Brews?")))
+        cell_align = (0.0, 0.5)
+        col_min = 110
+        col_max = 200
+        col_align = 0.0
 
         for key, title in transl:
             cell = None
@@ -99,25 +108,56 @@ class TreeView:
                 cell.set_property("editable", False)
                 cell.set_property("ellipsize", Pango.EllipsizeMode.END)
 
-                col.set_min_width(50)
-                col.set_fixed_width(70)
+                cell_align = (0.5, 0.5)
+                col_align = 0.5
+                col_min = 70
+                col_max = 80
             elif key == "brew_toggle":
                 cell = Gtk.CellRendererToggle()
                 cell.set_property("activatable", True)
                 cell.set_property("radio", False)
                 cell.connect("toggled", self._toggled_cb, key)
 
-                col.set_min_width(110)
-                col.set_fixed_width(200)
+                cell_align = (0.5, 0.5)
+                col_align = 0.5
+                col_min = 110
+                col_max = 200
+            elif key == "temperature":
+                cell = Gtk.CellRendererCombo()
+                cell.set_property("editable", True)
+                cell.set_property("model", temperature_range)
+                cell.set_property("text-column", 0)
+                cell.set_property("has-entry", False)
+                cell.connect("edited", self._edited_combo, key)
+
+                cell_align = (0.5, 0.5)
+                col_align = 0.5
+                col_min = 65
+                col_max = 80
             else:
                 cell = Gtk.CellRendererText()
                 cell.set_property("ellipsize", Pango.EllipsizeMode.END)
                 cell.set_property("editable", True)
                 cell.connect("edited", self._edited_cb, key)
 
-                col.set_min_width(120)
-                col.set_fixed_width(200)
+                if key == "name":
+                    col_min = 120
+                    col_max = 200
+                elif key == "duration":
+                    cell_align = (0.5, 0.5)
+                    col_align = 0.5
+                    col_min = 80
+                    col_max = 100
+                elif key == "increment":
+                    cell_align = (0.5, 0.5)
+                    col_align = 0.5
+                    col_min = 130
+                    col_max = 140
 
+            cell.set_alignment(cell_align[0], cell_align[1])
+            col.set_alignment(col_align)
+            col.set_min_width(col_min)
+            col.set_fixed_width(col_max)
             col.pack_end(cell, False)
             self._cells.append(cell)
 
@@ -125,7 +165,7 @@ class TreeView:
             self._obj.append_column(col)
 
     def add_addline(self):
-        self._model.append({"name": _("New Entry"), "duration": 0, "increment": 30, "brew": "-", "brew_toggle": False})
+        self._model.append({"name": _("New Entry"), "temperature": "70 °C", "duration": 0, "increment": 30, "brew": "-", "brew_toggle": False})
 
     def in_edit(self):
         return any([c.get_property("editing") for c in self._cells])
@@ -136,12 +176,17 @@ class TreeView:
 
         if not status:
             # Disable brew
-            self._model[itr]["brew"] = "-"
+            if key == "brew_toggle":
+                self._model[itr]["brew"] = "-"
         elif status:
             # Enable brew
-            self._model[itr]["brew"] = 0
+            if key == "brew_toggle":
+                self._model[itr]["brew"] = 0
 
         self._model[itr][key] = status
+
+    def _edited_combo(self, cell, itr, value, key):
+        self._model[itr][key] = value
 
     def _edited_cb(self, cell, itr, value, key):
         # Allow different input formats
@@ -160,6 +205,8 @@ class TreeView:
             if t is None: return
 
             value = t.tm_sec + 60 * t.tm_min + 60*60 * t.tm_hour
+        elif key == "temperature":
+            pass
         else:
             value = value#.decode("utf-8") # for consistency, obsolete in python3??
 
@@ -183,6 +230,8 @@ class TreeView:
             else:
                 v = time.strftime("%M:%S", time.gmtime(v))
         elif key == "brew":
+            v = str(v)
+        elif key == "temperature":
             v = str(v)
 
         last = int(str(model.get_path(itr))) == (len(model) - 1)
@@ -322,8 +371,7 @@ class Controller:
 
         self.set_label_text()
 
-        self.window.iconify() # does not minimize atm
-        #self.window.hide() # hard to unhide again...
+        self.window.iconify()
 
     def stop(self):
         self.le.set_property("urgent", False)
@@ -350,9 +398,6 @@ class Controller:
             self.notification.show()
             # Use libcanberra if possible
             subprocess.Popen(["paplay", SOUND_ALERT_FILE])
-#            print('Showing notice, not seen yet...')
-#        else:
-#            print('Seen before notice is shown?')
 
         return not self.seen
 
@@ -385,11 +430,8 @@ class Controller:
 
     def timer_noticed(self, *a):
         if self.timer and not self.timer.running:
-#            print("Timer has been seen!")
             self.seen = True
             self.stop()
-#        else:
-#            print("Timer has not been seen...")
 
     def reset_brew_counter(self):
         self.brew_counter_update(0)
@@ -420,8 +462,8 @@ class Controller:
         else:
             newValue = value
 
+        # Set new value and update TreeView
         item["brew"] = newValue
-
         current = self.list._obj.get_cursor()
         self.list._obj.set_cursor(current[0]) # trigger treeview update (focus row)
 
