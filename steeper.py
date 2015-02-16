@@ -312,16 +312,32 @@ class Controller:
 
     def on_key_press(self, caller, ev):
         key = Gdk.keyval_name(ev.keyval)
+        selection = self.list._obj.get_selection()
+        row = selection.get_selected()
+        row_index = int(str(self.store._obj.get_path(row[1])))
 
-        if key == "Delete" and not self.list.in_edit():
-            # Don't allow deletion of addline
-            if self.sel == len(self.store._obj) - 1:
-                return
+        if ev.state & Gdk.ModifierType.CONTROL_MASK:
+            itr_max = len(self.store._obj) - 2
+            itr = self.store._obj.get_iter(row_index)
+            prev_itr = self.store._obj.get_iter(row_index - 1) if row_index > 0 else None
+            next_itr = self.store._obj.get_iter(row_index + 1) if row_index < itr_max else None
 
-            itr = self.store._obj.get_iter(self.sel)
-            self.store._obj.remove(itr)
-        elif key == "BackSpace" and not self.list.in_edit():
-            self.reset_brew_counter()
+            if key == "Up" and not self.list.in_edit() and prev_itr != None:
+                self.store._obj.move_before(itr, prev_itr)
+                self.focus_row(row_index - 1)
+            elif key == "Down" and not self.list.in_edit() and next_itr != None:
+                self.store._obj.move_after(itr, next_itr)
+                self.focus_row(row_index + 1)
+        else:
+            if key == "Delete" and not self.list.in_edit():
+                # Don't allow deletion of addline
+                if self.sel == len(self.store._obj) - 1:
+                    return
+
+                itr = self.store._obj.get_iter(row_index)
+                self.store._obj.remove(itr)
+            elif key == "BackSpace" and not self.list.in_edit():
+                self.reset_brew_counter()
 
     def on_sel_changed(self, *a):
         self.sel = self.list._obj.get_cursor()[0]
@@ -434,14 +450,6 @@ class Controller:
         self.brew_counter_update(+1)
 
     def brew_counter_update(self, value):
-        # Check value, will we need a modifier?
-        if value < 0:
-            modifier = "-"
-        elif value > 0:
-            modifier = "+"
-        else:
-            modifier = None
-
         # Get value from store
         itr = self.store._obj.get_iter(self.sel)
         item = self.store._obj.get_value(itr,0)
@@ -449,17 +457,23 @@ class Controller:
         if not item["brew_toggle"]:
             return False
 
-        if modifier == "+":
+        if value > 0:
             newValue = item["brew"] + value
-        elif modifier == "-":
-            newValue = item["brew"] - value
+        elif value < 0:
+            newValue = item["brew"] - abs(value)
         else:
             newValue = value
 
         # Set new value and update TreeView
         item["brew"] = newValue
-        current = self.list._obj.get_cursor()
-        self.list._obj.set_cursor(current[0]) # trigger treeview update (focus row)
+        self.focus_row()
+
+    def focus_row(self, row_index=None):
+        if row_index == None:
+            current = self.list._obj.get_cursor()
+            self.list._obj.set_cursor(current[0])
+        else:
+            self.list._obj.set_cursor(row_index)
 
 if __name__ == "__main__":
     c = Controller()
