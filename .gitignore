@@ -2,6 +2,7 @@
 .pybuild
 build
 dist
+__pycache__
 debian/files
 debian/steeper
 debian/steeper.*
