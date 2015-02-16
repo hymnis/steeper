@@ -3,23 +3,17 @@
 import time
 import json
 import locale
-import subprocess
+# import subprocess
+import pycanberra
 
 # Not for production
 #import os
 #import pprint
 
 from gi.repository import Unity, GObject, Gtk, Notify, Gdk, Pango, GLib
-# from gi.repository import GObject, Gtk, Notify, Gdk, Pango, GLib
 
 GETTEXT_DOMAIN = "steeper"
-
-# Should use libcanberra, but no python bindings so far..
-SOUND_ALERT_FILE = "/usr/share/sounds/freedesktop/stereo/complete.oga"
-
 REMIND_DELTA_SECONDS=30
-
-#DATA = os.path.expanduser("~/Dropbox/Src/steeper-workdir/steeper-v2/") # dev/debug path
 DATA = "/usr/share/steeper/"
 
 # Use locale instead of gettext, so GTK gets the change
@@ -396,8 +390,9 @@ class Controller:
         if not self.seen:
             self.notification.set_info(self.timer)
             self.notification.show()
-            # Use libcanberra if possible
-            subprocess.Popen(["paplay", SOUND_ALERT_FILE])
+            canberra = pycanberra.Canberra()
+            canberra.easy_play_sync("complete")
+            canberra.destroy()
 
         return not self.seen
 
@@ -405,7 +400,6 @@ class Controller:
         self.seen = False
         self.show_notification()
         self.notify_src = GObject.timeout_add_seconds(REMIND_DELTA_SECONDS, self.show_notification)
-#        print('Notification loop started ('+ str(self.notify_src) +')')
 
     def do_tick(self):
         p = self.timer.get_progress()

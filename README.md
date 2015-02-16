@@ -11,7 +11,7 @@ The name comes partly from the fact that it's a tool for measuring steeping time
 - Optional brew counting
 
 ## Todo
-- libcanbarra support (for audio notification)
+- ~~libcanberra support (for audio notification)~~
 - Settings (custom notification sound, temperature unit etc.)
 - Help (how to delete, reset counter etc. intended use and background)
 - Better menu (setting, help, about, quit)
@@ -24,6 +24,7 @@ The name comes partly from the fact that it's a tool for measuring steeping time
 
 ## Ideas / Suggestions
 - Mode setting, basic or advanced. Disables/enables extra features like brew counter, temperature display and so on. One simple timer and clean UI in basic and a more precise and adjustable timer and UI in advanced.
+- Progressbar, showing how near completion the current brew is (not very useful, window is usually minimized)
 
 ## Building package
 If you are running Debian/Ubuntu you can easily build a .deb package for clean installation.  
