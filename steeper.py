@@ -78,7 +78,7 @@ class TreeView:
 
         temperature_range = Gtk.ListStore(str)
 
-        for i in range(65, 96):
+        for i in range(50, 100):
             temperature_range.prepend([str(i)+" °C"])
 
         transl = (("name", _("Name")), ("temperature", _("Temp.")), ("duration", _("Duration")), ("increment", _("Brew Increment")), ("brew", _("Brews")), ("brew_toggle", _("Count Brews?")))
