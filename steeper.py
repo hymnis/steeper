@@ -81,7 +81,7 @@ class TreeView:
         for i in range(65, 96):
             temperature_range.prepend([str(i)+" °C"])
 
-        transl = (("name", _("Name")), ("temperature", _("Temp.")), ("duration", _("Duration")), ("increment", _("Brew Increment")), ("brew", _("Brews")), ("brew_toggle", _("Count Brews?")))
+        transl = (("name", _("Name")), ("temperature", _("Temp.")), ("duration", _("Duration")), ("increment", _("Increment")), ("brew", _("Brews")), ("brew_toggle", _("Count Brews?")))
         cell_align = [0.0, 0.5]
         col_settings = {"min": 110
                        ,"max": 200
@@ -115,34 +115,39 @@ class TreeView:
                 col_settings["align"] = 0.5
                 col_settings["min"] = 65
                 col_settings["max"] = 80
+            elif key == "brew":
+                cell = Gtk.CellRendererSpin()
+                cell.set_property("editable", True)
+                cell.connect("edited", self._edited_spin, key)
+
+                # value=0, lower=0, upper=0, step_incr=0, page_incr=0, page_size=0
+                adjustment = Gtk.Adjustment(0, 0, 50, 1, 10, 0)
+                cell.set_property("adjustment", adjustment)
+
+                cell_align = [0.5, 0.5]
+                col_settings["align"] = 0.5
+                col_settings["min"] = 90
+                col_settings["max"] = 100
             else:
                 cell = Gtk.CellRendererText()
                 cell.set_property("ellipsize", Pango.EllipsizeMode.END)
 
-                if key == "brew":
-                    cell.set_property("editable", False)
+                cell.set_property("editable", True)
+                cell.connect("edited", self._edited_cb, key)
 
+                if key == "name":
+                    col_settings["min"] = 120
+                    col_settings["max"] = 200
+                elif key == "duration":
                     cell_align = [0.5, 0.5]
                     col_settings["align"] = 0.5
-                    col_settings["min"] = 70
-                    col_settings["max"] = 80
-                else:
-                    cell.set_property("editable", True)
-                    cell.connect("edited", self._edited_cb, key)
-
-                    if key == "name":
-                        col_settings["min"] = 120
-                        col_settings["max"] = 200
-                    elif key == "duration":
-                        cell_align = [0.5, 0.5]
-                        col_settings["align"] = 0.5
-                        col_settings["min"] = 80
-                        col_settings["max"] = 100
-                    elif key == "increment":
-                        cell_align = [0.5, 0.5]
-                        col_settings["align"] = 0.5
-                        col_settings["min"] = 130
-                        col_settings["max"] = 140
+                    col_settings["min"] = 80
+                    col_settings["max"] = 100
+                elif key == "increment":
+                    cell_align = [0.5, 0.5]
+                    col_settings["align"] = 0.5
+                    col_settings["min"] = 90
+                    col_settings["max"] = 110
 
             cell.set_alignment(cell_align[0], cell_align[1])
             col.set_alignment(col_settings["align"])
@@ -207,6 +212,10 @@ class TreeView:
         if last:
             self.add_addline()
 
+    def _edited_spin(self, cell, itr, value, key):
+        if key == "brew" and self._model[itr][key] != "-":
+            self._model[itr][key] = int(value)
+
     def _data_func(self, col, cell, model, itr, key):
         try:
             v = model[itr][0][key]
@@ -221,6 +230,11 @@ class TreeView:
                 v = time.strftime("%M:%S", time.gmtime(v))
         elif key == "brew":
             v = str(v)
+            
+            if v == "-":
+                cell.set_property("editable", False)
+            else:
+                cell.set_property("editable", True)
         elif key == "temperature":
             v = str(v)
 
