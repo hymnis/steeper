@@ -15,7 +15,7 @@ The name comes partly from the fact that it's a tool for measuring steeping time
 - [ ] Settings (custom notification sound, temperature unit etc.)
 - [ ] Help (how to delete, reset counter etc. intended use and background)
 - [ ] Better menu (setting, help, about, quit)
-- [ ] Manual brew count adjustment (dec/inc, maybe arrow buttons?)
+- [x] Manual brew count adjustment (dec/inc, maybe arrow buttons?)
 - [x] Add temperature label (for each entry, only indicating correct temperature)
 - [ ] List sorting and/or support for manual order
 - [ ] Refactoring, clean-up and such (TreeView init for example)
