@@ -7,3 +7,5 @@ debian/files
 debian/steeper
 debian/steeper.*
 po/steeper.pot
+*.sublime-workspace
+*.sublime-project
