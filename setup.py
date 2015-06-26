@@ -22,7 +22,7 @@ setup(
       description = "Simple tea steeping timer (mainly for Unity)",
       author = "Peter Dahlman",
       author_email = "peter.dahlman@gmail.com",
-      url = "http://",
+      url = "https://github.com/hymnis/steeper",
       license = "GNU GPL v3",
       data_files = [("share/applications/", ["steeper.desktop"]),
                     (DEST+"icons/", ["icons/steeper-scalable.svg",
