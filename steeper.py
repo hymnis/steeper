@@ -3,6 +3,7 @@
 import time
 import json
 import locale
+import os.path
 import pycanberra
 
 from gi.repository import Unity, GObject, Gtk, Notify, Gdk, Pango, GLib
@@ -10,6 +11,7 @@ from gi.repository import Unity, GObject, Gtk, Notify, Gdk, Pango, GLib
 GETTEXT_DOMAIN = "steeper"
 REMIND_DELTA_SECONDS=30
 DATA = "/usr/share/steeper/"
+##DATA = "/home/hymnis/Dropbox/Src/steeper-workdir/steeper-git/"
 
 # Use locale instead of gettext, so GTK gets the change
 locale.bindtextdomain(GETTEXT_DOMAIN, DATA+"locale/")
@@ -295,16 +297,32 @@ class Controller:
         xml.add_from_file(DATA + "window.ui")
 
         xml.connect_signals({"hide-widget": lambda w, *args: w.hide_on_delete()})
-        about = xml.get_object("aboutdialog1")
-        xml.get_object("menuitem_about").connect("activate", lambda *args: about.show())
+
+        # Quit
+        xml.get_object("menuitem_quit").connect("activate", lambda *args: self.main.quit())
+
+        # Help
+        self.helpWnd = xml.get_object("helpdialog1")
+        xml.get_object("menuitem_help").connect("activate", lambda *args: self.show_help())
+
+        # Don't show help item if we are missing the help document
+        if os.path.isfile(DATA+"help.txt") == False:
+            xml.get_object("menuitem_help").hide()
+
+        # About
+        aboutWnd = xml.get_object("aboutdialog1")
+        xml.get_object("menuitem_about").connect("activate", lambda *args: aboutWnd.show())
 
         self.le = Unity.LauncherEntry.get_for_desktop_file("steeper.desktop")
 
+        # Timer label
         self.label = xml.get_object("label1")
 
+        # Start button
         self.start_button = xml.get_object("button1")
         self.start_button.connect("clicked", self.on_button_click)
 
+        # List and data
         self.store = ListStore(xml.get_object("liststore1"))
         self.list = TreeView(xml.get_object("treeview1"), self.store)
         self.list._obj.connect("cursor-changed", self.on_sel_changed)
@@ -345,6 +363,7 @@ class Controller:
         self.start_button.set_sensitive(not (self.sel == len(self.store._obj) - 1))
 
     def on_button_click(self, *a):
+        # Start timer if it's off and stop if it's on
         if self.timer is None:
             try:
                 self.start()
@@ -352,6 +371,47 @@ class Controller:
                 pass
         else:
             self.stop()
+
+    def show_help(self, *a):
+        # Get dialog information from glade file, populate and then display it
+        # If we actually have a help file to get data from
+        if os.path.isfile(DATA+"help.txt"):
+            xml = Gtk.Builder()
+            xml.set_translation_domain(GETTEXT_DOMAIN)
+            xml.add_from_file(DATA + "window.ui")
+
+            self.helpWnd = xml.get_object("helpdialog1")
+            self.help = xml.get_object("textview1")
+            self.help_buffer = self.help.get_buffer()
+
+            # Help close button
+            help_close_button = xml.get_object("button2")
+            help_close_button.connect("clicked", lambda *args: self.helpWnd.hide())
+
+            help_text = open(DATA+"help.txt", "r")
+            h_tag = self.help_buffer.create_tag("h", size_points=16, weight=Pango.Weight.BOLD)
+            i_tag = self.help_buffer.create_tag("i", style=Pango.Style.ITALIC)
+            b_tag = self.help_buffer.create_tag("b", weight=Pango.Weight.BOLD)
+
+            for line in help_text:
+                position = self.help_buffer.get_end_iter()
+
+                if str(line)[:1] == "=":  # Headline
+                    line = str(line)[1:]
+                    self.help_buffer.insert_with_tags(position, str(line)+"\n", h_tag)
+                elif str(line)[:1] == "*":  # Bold first word
+                    line = str(line)[1:]
+                    parts = line.split(" ", 1)
+
+                    if parts[0] != None:
+                        self.help_buffer.insert_with_tags(position, str(parts[0]), b_tag)
+                    if len(parts) == 2:
+                        line = parts[1]
+                        self.help_buffer.insert(position, str(line)+"\n")
+                else:  # Normal
+                    self.help_buffer.insert(position, str(line)+"\n")
+
+            self.helpWnd.show()
 
     def set_label_text(self):
         name = self.timer.obj["name"]

@@ -1,0 +1,7 @@
+=Item shortkeys
+*Backspace , Reset brew counter
+*Delete , Remove item from list
+
+=Usage
+To edit a field, simply click it and start altering. Add a new item is as simple as editing the last row and when you are done it's automatically added.
+The brew counter can also be manually altered (if you miss to time a brew for example), both via numeric input or by using the buttons.
