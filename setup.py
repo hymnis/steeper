@@ -29,4 +29,4 @@ setup(
                     "icons/steeper-48x48.png",
                     "icons/steeper-64x64.png",
                     "icons/steeper-128x128.png"]),
-                    (DEST, ["window.ui", "steeper.py", "pycanberra.py"])])
+                    (DEST, ["window.ui", "steeper.py", "pycanberra.py", "help.txt"])])
