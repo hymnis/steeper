@@ -18,7 +18,7 @@ setup(
       cmdclass = {"build": build_extra.build_extra,
                   "build_i18n": my_build_i18n},
       name = "steeper",
-      version = "0.2",
+      version = "0.2.1",
       description = "Simple tea steeping timer (mainly for Unity)",
       author = "Peter Dahlman",
       author_email = "peter.dahlman@gmail.com",

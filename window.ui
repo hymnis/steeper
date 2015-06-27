@@ -243,7 +243,7 @@
     <property name="type_hint">menu</property>
     <property name="transient_for">window1</property>
     <property name="program_name">Steeper</property>
-    <property name="version">0.2</property>
+    <property name="version">0.2.1</property>
     <property name="comments" translatable="yes">Simple tea steeping timer (mainly for Unity)</property>
     <property name="authors">Peter Dahlman, based on code by Pavel Rojtberg</property>
     <property name="translator_credits" translatable="yes">translator-credits</property>

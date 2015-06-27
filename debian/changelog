@@ -1,3 +1,10 @@
+steeper (0.2.1-1) trusty; urgency=low
+
+  * adds new menu items ("Quit", "Settings"*, "Open"* and "Help"). * = not visible yet
+  * adds help dialog
+
+ -- Peter Dahlman <peter.dahlman@gmail.com>  Sat, 27 Jun 2015 13:46:24 +0100
+
 steeper (0.2-1) trusty; urgency=low
 
   * adds support for temperature label
