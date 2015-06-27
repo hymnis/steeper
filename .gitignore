@@ -9,3 +9,4 @@ debian/steeper.*
 po/steeper.pot
 *.sublime-workspace
 *.sublime-project
+*.*~
