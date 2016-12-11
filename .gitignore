@@ -4,9 +4,11 @@ build
 dist
 __pycache__
 debian/files
+debian/debhelper-build-stamp
 debian/steeper
 debian/steeper.*
 po/steeper.pot
 *.sublime-workspace
 *.sublime-project
 *.*~
+
