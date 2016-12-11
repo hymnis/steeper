@@ -17,8 +17,8 @@ from gi.repository import Unity, GObject, Gtk, Notify, Gdk, Pango, GLib
 
 GETTEXT_DOMAIN = "steeper"
 REMIND_DELTA_SECONDS = 30
-# DATA = "/usr/share/steeper/"
-DATA = "/home/hymnis/ownCloud/src/steeper-workdir/steeper-git/"
+DATA = "/usr/share/steeper/"
+# DATA = "/home/hymnis/ownCloud/src/steeper-workdir/steeper-git/"
 
 # Use locale instead of gettext, so GTK gets the change
 locale.bindtextdomain(GETTEXT_DOMAIN, DATA + "locale/")
