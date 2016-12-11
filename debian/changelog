@@ -1,3 +1,11 @@
+steeper (0.2.2-1) UNRELEASED; urgency=medium
+
+  * adds input arguments, for log level and showing help
+  * updates timer configuration path
+  * updates .desktop file, so exec calls python with file as argument 
+
+ -- Peter Dahlman <peter.dahlman@gmail.com>  Sun, 11 Dec 2016 15:34:23 +0100
+
 steeper (0.2.1-1) trusty; urgency=low
 
   * adds new menu items ("Quit", "Settings"*, "Open"* and "Help"). * = not visible yet
