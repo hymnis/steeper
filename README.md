@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/hymnis/steeper?branch=master)](https://travis-ci.org/hymnis/steeper)
+[![Build Status](https://travis-ci.org/hymnis/steeper.svg?branch=master)](https://travis-ci.org/hymnis/steeper)
 
 # Steeper
 
